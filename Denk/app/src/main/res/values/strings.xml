@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Dank It</string>
+    <string name="add_image">Add Image</string>
+    <string name="add_filter">Add Filter</string>
+    <string name="save">Save</string>
+    <string name="share">Share</string>
+    <string name="enter_top_text">Enter Top Text</string>
+    <string name="enter_bottom_text">Enter Bottom Text</string>
+    <string name="bottom_text">Bottom Text</string>
+    <string name="top_text">Top Text</string>
+</resources>
