@@ -5,11 +5,11 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
     Integer REQUEST_CAMERA = 1, SELECT_FILE = 0;
 
-    private static final int RESULT_LOAD_IMAGE = 20;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         intent.putExtra("return-data", true);
 
-                        startActivityForResult(intent.createChooser(intent, "Select File"), SELECT_FILE);
+                        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
 
                     } catch (ActivityNotFoundException e) {
                         e.printStackTrace();
@@ -114,7 +112,9 @@ public class MainActivity extends AppCompatActivity {
                 final Bitmap bitmap = (Bitmap) bundle.get("data");
 
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                if (bitmap != null) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                }
 
                 imageView.setImageBitmap(bitmap);
 
@@ -127,7 +127,9 @@ public class MainActivity extends AppCompatActivity {
                     Bitmap photo = extras2.getParcelable("data");
 
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                    if (photo != null) {
+                        photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                    }
 
                     imageView.setImageBitmap(photo);
                 }
@@ -151,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         }
         File file = new File(dirPath, filename);
         try {
-            FileOutputStream fos = null;
+            FileOutputStream fos;
             fos = new FileOutputStream(file);
 
             bm.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -159,8 +161,6 @@ public class MainActivity extends AppCompatActivity {
             fos.close();
             Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show();
 
-        } catch (FileNotFoundException e) {
-            Toast.makeText(this, "Failed to save", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Toast.makeText(this, "Failed to save", Toast.LENGTH_LONG).show();
         }
